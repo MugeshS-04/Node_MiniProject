@@ -1,25 +1,40 @@
 import jwt from 'jsonwebtoken'
 
 export const access_verify = (req, res, next) => {
-    const header = req.headers["authorization"]
 
-    const accesstoken = header.split(" ")[1]
+    try{
+        const header = req.headers["authorization"]
 
-    const key = jwt.verify(accesstoken, process.env.JWT_ACCESSTOKEN_SECRETKEY)
+        const accesstoken = header.split(" ")[1]
 
-    req.user = key
+        const key = jwt.verify(accesstoken, process.env.JWT_ACCESSTOKEN_SECRETKEY)
 
-    next()
+        req.user = key
+
+        return next()
+    }
+    catch(error)
+    {
+        return res.json({success : false, message : error.message})
+    }
 }
 
 export const refresh_verify = (req, res, next) => {
-    const header = req.headers["authorization"]
 
-    const refreshtoken = header.split(" ")[1]
+    try{
+        const header = req.headers["authorization"]
 
-    const key = jwt.verify(refreshtoken, process.env.JWT_REFRESHTOKEN_SECRETKEY)
+        const refreshtoken = header.split(" ")[1]
 
-    req.user = key
+        const key = jwt.verify(refreshtoken, process.env.JWT_REFRESHTOKEN_SECRETKEY)
 
-    next()
+        req.user = key
+
+        return next()
+    }
+    catch(error)
+    {
+        return res.json({success : false, message : error.message})
+    }
+    
 }

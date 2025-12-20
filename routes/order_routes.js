@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { createOrder, getOrderDetails, updateOrder, getOrders } from "../controller/order_controller.js"
+import { createOrder, getOrderDetails, updateOrder, getOrders } from "../controllers/order_controller.js"
 
 const order_router = express.Router()
 

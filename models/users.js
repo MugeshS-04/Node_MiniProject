@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         
         if(user)
         {
-          const isvalid = await bcrypt.compare(data.password, existinguser.password)
+          const isvalid = await bcrypt.compare(data.password, user.password)
 
           if(isvalid)
           {
@@ -52,24 +52,36 @@ module.exports = (sequelize, DataTypes) => {
         }
     }
 
-    static async update(data)
+    static async updateUser(data, email)
     {
-        const user = await users.findOne({where : { email : data.email }})
-        
-        if(user)
-        {
-          const isvalid = await bcrypt.compare(data.password, existinguser.password)
+      const user = await users.findOne({where : { email : email }})
 
-          if(isvalid)
-          {
-            return user
-          }
-          throw new Error("Incorrect Password")
+      const details = {}
+      
+      Object.entries(data).forEach(([key, value]) => {
+        if(key !== "id" && key !== "password" && key !== "email") {
+          details[key] = value;
         }
-        else
+      })
+
+      if (Object.keys(details).length === 0) {
+        throw new Error("No valid fields to update")
+      }
+
+      if(user)
+      {
+        const [updateCount] = await users.update(details, {where : { email }})
+
+        if(updateCount > 0)
         {
-          throw new Error("User doesn't Exists!")
+          return updateCount
         }
+        throw new Error("No records Updated!")
+      }
+      else
+      {
+        throw new Error("User doesn't Exists!")
+      }
     }
   }
 
