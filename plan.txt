@@ -1,0 +1,18 @@
+User Table Model 
+    - User id(PK) -> Integer
+    - First Name -> String
+    - Last Name -> String
+    - Age -> Integer
+    - Email -> String
+    - Password -> String
+    - Contact number -> String
+
+Order Table Model
+    - Order id -> Integer
+    - User id(FK) -> Integer
+    - Order Name -> String
+    - Order Date -> Integer
+    - Amount -> Integer
+    - Payment Method -> String [Card / Cash]
+
+User -> (One to Many) -> Orders

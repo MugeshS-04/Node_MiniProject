@@ -1,7 +1,7 @@
 import express from 'express'
 
 import { register, login, update } from "../controller/user_controller.js"
-import { access_verify, refresh_verify } from "../token.js"
+import { access_verify, refresh_verify } from "../helpers/token.js"
 
 const user_router = express.Router()
 

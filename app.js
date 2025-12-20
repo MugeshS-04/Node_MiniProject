@@ -4,7 +4,7 @@ import { errors } from 'celebrate'
 import user_router from './routes/user_routes.js'
 import order_router from './routes/order_routes.js'
 
-dotenv.config()
+dotenv.config({quiet: true})
 
 const app = express()
 app.use(express.urlencoded())
