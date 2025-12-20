@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class orders extends Model {
     /**
@@ -14,6 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       orders.belongsTo(models.users, {
         foreignKey : 'user_id'
       })
+    }
+
+    static async createorder(orderdetails)
+    {
+      orderdetails.order_date = new Date()
+      const order = await orders.create(orderdetails)
+      return order
     }
   }
   orders.init({

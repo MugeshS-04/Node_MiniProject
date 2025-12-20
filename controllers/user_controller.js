@@ -14,9 +14,9 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try{
-        await db.users.login(req.body)
-        const accesstoken = jwt.sign({email : req.body.email}, process.env.JWT_ACCESSTOKEN_SECRETKEY, {expiresIn: '15m'})
-        const refreshtoken = jwt.sign({email : req.body.email}, process.env.JWT_REFRESHTOKEN_SECRETKEY, {expiresIn: '7d'})
+        const user = await db.users.login(req.body)
+        const accesstoken = jwt.sign({email : user.email, id : user.id}, process.env.JWT_ACCESSTOKEN_SECRETKEY, {expiresIn: '15m'})
+        const refreshtoken = jwt.sign({email : user.email, id : user.id}, process.env.JWT_REFRESHTOKEN_SECRETKEY, {expiresIn: '7d'})
         res.json({ success : true, message : "Login Successfull!", accesstoken: accesstoken, refreshtoken: refreshtoken })
     }
     catch(error)
@@ -29,6 +29,17 @@ export const update = async (req, res) => {
     try{
         await db.users.updateUser(req.body, req.user.email)
         res.json({success: true, message: "Updation Successfull!"})
+    }
+    catch(error)
+    {
+        res.json({success: false, message: error.message})
+    }
+}
+
+export const refresh = async (req, res) => {
+    try{
+        const accesstoken = jwt.sign({email : req.user.email}, process.env.JWT_ACCESSTOKEN_SECRETKEY, {expiresIn: '15m'})
+        res.json({ success : true, message : "AccessToken Generation Successfull!", accesstoken: accesstoken })
     }
     catch(error)
     {
