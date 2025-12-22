@@ -56,27 +56,33 @@ module.exports = (sequelize, DataTypes) => {
     {
       const user = await users.findOne({where : { email : email }})
 
-      const details = {}
-      
-      Object.entries(data).forEach(([key, value]) => {
-        if(key !== "id" && key !== "password" && key !== "email") {
-          details[key] = value;
-        }
-      })
-
-      if (Object.keys(details).length === 0) {
+      if (Object.keys(user).length === 0) {
         throw new Error("No valid fields to update")
       }
 
       if(user)
       {
-        const [updateCount] = await users.update(details, {where : { email }})
+        const [updateCount] = await users.update(data, {where : { email }})
 
         if(updateCount > 0)
         {
           return updateCount
         }
         throw new Error("No records Updated!")
+      }
+      else
+      {
+        throw new Error("User doesn't Exists!")
+      }
+    }
+
+    static async deleteUser(email)
+    {
+      const deleteCount = await users.destroy({where : {email : email}})
+
+      if(deleteCount > 0)
+      {
+        return deleteCount
       }
       else
       {
@@ -95,8 +101,12 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'users',
-    paranoid: true
+    paranoid: true,
+    defaultScope: {
+      attributes: {exclude: ["createdAt", "updatedAt", "password", "deletedAt"]}
+    }
   });
+
   return users;
 
 };

@@ -8,6 +8,7 @@
     "migrate": "npx sequelize-cli db:migrate",
     "down": "npx sequelize-cli db:migrate:undo",
     "down-all": "npx sequelize-cli db:migrate:undo:all",
+    "seed": "npx sequelize-cli db:seed:all",
     "start": "nodemon server.js"
   },
   "repository": {

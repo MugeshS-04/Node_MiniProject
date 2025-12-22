@@ -15,7 +15,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     try{
         const user = await db.users.login(req.body)
-        const accesstoken = jwt.sign({email : user.email, id : user.id}, process.env.JWT_ACCESSTOKEN_SECRETKEY, {expiresIn: '15m'})
+        const accesstoken = jwt.sign({email : user.email, id : user.id}, process.env.JWT_ACCESSTOKEN_SECRETKEY, {expiresIn: '1d'})
         const refreshtoken = jwt.sign({email : user.email, id : user.id}, process.env.JWT_REFRESHTOKEN_SECRETKEY, {expiresIn: '7d'})
         res.json({ success : true, message : "Login Successfull!", accesstoken: accesstoken, refreshtoken: refreshtoken })
     }
@@ -29,6 +29,17 @@ export const update = async (req, res) => {
     try{
         await db.users.updateUser(req.body, req.user.email)
         res.json({success: true, message: "Updation Successfull!"})
+    }
+    catch(error)
+    {
+        res.json({success: false, message: error.message})
+    }
+}
+
+export const deleteUser = async (req, res) => {
+    try{
+        await db.users.deleteUser(req.user.email)
+        res.json({success: true, message: "Deletion Successfull!"})
     }
     catch(error)
     {

@@ -8,11 +8,23 @@ User Table Model
     - Contact number -> String
 
 Order Table Model
-    - Order id -> Integer
+    - Order id(PK) -> Integer
     - User id(FK) -> Integer
     - Order Name -> String
     - Order Date -> Integer
     - Amount -> Integer
     - Payment Method -> String [Card / Cash]
 
+Product Table Model 
+    - Product id(PK) -> Integer 
+    - Product name -> String
+    - Product price -> Integer
+
+Product_Order_Junction Table Model
+    - id -> Integer
+    - Product id(FK) -> Integer
+    - Order id(FK) -> Integer    
+    - Quantity -> Integer
+
 User -> (One to Many) -> Orders
+Orders -> (Many to Many) -> Products

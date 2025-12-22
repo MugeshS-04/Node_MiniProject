@@ -12,12 +12,28 @@ module.exports = (sequelize, DataTypes) => {
       orders.belongsTo(models.users, {
         foreignKey : 'user_id'
       })
+
+      orders.belongsToMany(models.products, { 
+        through: models.order_product,
+        foreignKey: "order_id",
+      })
     }
 
-    static async createorder(orderdetails)
+    static async createorder(orderdetails, user_id, amount)
     {
       orderdetails.order_date = new Date()
+
+      orderdetails.user_id = user_id
+
+      orderdetails.amount = amount
+      
+      if(!orderdetails.order_name)
+      {
+        orderdetails.order_name = "order_"+orderdetails.order_date  
+      }
+      
       const order = await orders.create(orderdetails)
+      
       return order
     }
 
@@ -29,46 +45,28 @@ module.exports = (sequelize, DataTypes) => {
 
     static async getOrderDetails(order, user_id)
     {
-      const orderslist = await orders.findOne({where : { id : order.id, user_id : user_id }})
+      const orderslist = await orders.findOne({ attributes : {exclude : ["createdAt" , "updatedAt", "id", "user_id"]}}, {where : { id : order.id, user_id : user_id }})
       if(orderslist) return orderslist
       else throw new Error("No records found")
     }
 
-    static async updateOrder(order, user_id)
+    static async updateOrder(order, user_id, amount)
     {
-      const found_order = await orders.findOne({where : {id : order.id, user_id : user_id}})
-
+      if (Object.keys(order).length === 0) {
+        throw new Error("No valid fields to update")
+      }
+      order.amount = amount
       
-      if(found_order)
-        {
-          const details = {}
-          
-          Object.entries(order).forEach(([index, value]) => {
-          if(index != "id" && index != "user_id" && index != "order_date")
-          {
-            details[index] = value
-          }
-        })
-
-        if (Object.keys(details).length === 0) {
-          throw new Error("No valid fields to update")
-        }
-
-        const [updateCount] = await orders.update(details, {where : { id : order.id, user_id : user_id }})
-        
-        if(updateCount > 0)
-        {
-          return updateCount
-        }
-        else
-        {
-          console.log(updateCount)
-          throw new Error("No records Updated!")
-        }
+      const [updateCount] = await orders.update(order, {where : { id : order.id, user_id : user_id }})
+      
+      if(updateCount > 0)
+      {
+        return updateCount
       }
       else
       {
-        throw new Error("Order doesn't exist!")
+        console.log(updateCount)
+        throw new Error("No records Updated!")
       }
     }
   }
@@ -81,9 +79,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'orders',
-    paranoid: true,
-    defaultScope : {
-      attributes : { exclude : ['deletedAt', 'createdAt', 'updatedAt']}
+    defaultScope: {
+      attributes: {exclude: ["createdAt", "updatedAt", "password", "deletedAt", "id"]}
     }
   });
   return orders;
