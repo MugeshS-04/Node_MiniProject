@@ -20,6 +20,57 @@ module.exports = (sequelize, DataTypes) => {
       const order = await orders.create(orderdetails)
       return order
     }
+
+    static async getallOrders(user_id)
+    {
+      const orderslist = await orders.findAll({where : {user_id : user_id}})
+      return orderslist
+    }
+
+    static async getOrderDetails(order, user_id)
+    {
+      const orderslist = await orders.findOne({where : { id : order.id, user_id : user_id }})
+      if(orderslist) return orderslist
+      else throw new Error("No records found")
+    }
+
+    static async updateOrder(order, user_id)
+    {
+      const found_order = await orders.findOne({where : {id : order.id, user_id : user_id}})
+
+      
+      if(found_order)
+        {
+          const details = {}
+          
+          Object.entries(order).forEach(([index, value]) => {
+          if(index != "id" && index != "user_id" && index != "order_date")
+          {
+            details[index] = value
+          }
+        })
+
+        if (Object.keys(details).length === 0) {
+          throw new Error("No valid fields to update")
+        }
+
+        const [updateCount] = await orders.update(details, {where : { id : order.id, user_id : user_id }})
+        
+        if(updateCount > 0)
+        {
+          return updateCount
+        }
+        else
+        {
+          console.log(updateCount)
+          throw new Error("No records Updated!")
+        }
+      }
+      else
+      {
+        throw new Error("Order doesn't exist!")
+      }
+    }
   }
   orders.init({
     user_id: DataTypes.INTEGER,
@@ -30,7 +81,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'orders',
-    paranoid: true
+    paranoid: true,
+    defaultScope : {
+      attributes : { exclude : ['deletedAt', 'createdAt', 'updatedAt']}
+    }
   });
   return orders;
 };

@@ -9,6 +9,6 @@ order_router.post("/createorder", access_verify, createOrder)
 order_router.post("/updateorder", access_verify, updateOrder)
 
 order_router.get("/getorderdetails", access_verify, getOrderDetails)
-order_router.get("/getorders", access_verify, getallOrders)
+order_router.get("/getallorders", access_verify, getallOrders)
 
 export default order_router

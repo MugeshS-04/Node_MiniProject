@@ -14,9 +14,10 @@ export const createOrder = async (req, res) => {
     }
 }
 
-export const updateOrder = (req, res) => {
+export const updateOrder = async (req, res) => {
     try{
-
+        await db.orders.updateOrder(req.body, req.user.id)
+        res.json({success : true, message : "Details Updated Successfully!"})
     }
     catch(error)
     {
@@ -24,9 +25,10 @@ export const updateOrder = (req, res) => {
     }
 }
 
-export const getOrderDetails = (req, res) => {
+export const getOrderDetails = async (req, res) => {
     try{
-
+        const orderDetails = await db.orders.getOrderDetails(req.body, req.user.id)
+        res.json(orderDetails)
     }
     catch(error)
     {
@@ -34,9 +36,10 @@ export const getOrderDetails = (req, res) => {
     }
 }
 
-export const getallOrders = (req, res) => {
+export const getallOrders = async (req, res) => {
     try{
-
+        const orders = await db.orders.getallOrders(req.user.id)
+        res.json(orders)
     }
     catch(error)
     {
