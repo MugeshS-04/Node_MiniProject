@@ -54,26 +54,19 @@ module.exports = (sequelize, DataTypes) => {
 
     static async updateUser(data, email)
     {
-      const user = await users.findOne({where : { email : email }})
-
-      if (Object.keys(user).length === 0) {
+      if (Object.keys(data).length === 0) {
         throw new Error("No valid fields to update")
       }
 
-      if(user)
-      {
-        const [updateCount] = await users.update(data, {where : { email }})
+      const [updateCount] = await users.update(data, {where : { email }})
 
-        if(updateCount > 0)
-        {
-          return updateCount
-        }
-        throw new Error("No records Updated!")
-      }
-      else
+      if(updateCount > 0)
       {
-        throw new Error("User doesn't Exists!")
+        return updateCount
       }
+      
+      throw new Error("No records Updated!")
+
     }
 
     static async deleteUser(email)

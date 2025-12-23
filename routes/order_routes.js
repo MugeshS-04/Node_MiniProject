@@ -8,7 +8,6 @@ const order_router = express.Router()
 
 order_router.post("/createorder", celebrate({
     body : Joi.object({
-        order_name: Joi.string(),
         products: Joi.array(),
         payment_method: Joi.string()
     })

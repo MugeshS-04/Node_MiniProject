@@ -1,0 +1,13 @@
+product table -
+        product_id
+        product_name
+        Quantity
+
+order table -
+
+------
+
+1. Migration file to change the structure of that Model
+2. Add the Quantity information in that column
+3. Check the product Table for the quantity sufficience
+4. Sub the quantity count and update in the table again

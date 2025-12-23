@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha \"test/**/*.test.js\" --exit",
+    "coverage": "nyc mocha \"test/**/*.test.js\" --exit",
     "migrate": "npx sequelize-cli db:migrate",
     "down": "npx sequelize-cli db:migrate:undo",
     "down-all": "npx sequelize-cli db:migrate:undo:all",
@@ -25,13 +26,18 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "celebrate": "^15.0.3",
+    "chai": "^6.2.1",
+    "coverage": "^0.4.1",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "joi": "^18.0.2",
     "jsonwebtoken": "^9.0.3",
+    "mocha": "^11.7.5",
     "nodemon": "^3.1.11",
+    "nyc": "^17.1.0",
     "pg": "^8.16.3",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.7",
+    "sinon": "^21.0.1"
   }
 }

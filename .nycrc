@@ -1,0 +1,20 @@
+{
+  "all": true,
+  "include": [
+    "controllers/**/*.js",
+    "helper/**/*.js",
+    "routes/**/*.js",
+    "models/**/*.js"
+  ],
+  "exclude": [
+    "controllers/**",
+    "server.js",
+    "app.js",
+    "models/db.js",
+    "routes/order_routes.js",
+    "routes/user_routes.js",
+    "node_modules/**"
+  ],
+  "reporter": ["text", "html"],
+  "report-dir": "./coverage"
+}

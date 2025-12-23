@@ -28,7 +28,7 @@ export const updateOrder = async (req, res) => {
 
 export const getOrderDetails = async (req, res) => {
     try{
-        const orderDetails = await db.orders.getOrderDetails(req.body, req.user.id)
+        const orderDetails = await db.orders.getOrderDetails(req.body.id, req.user.id)
         const productDetails = await db.order_product.getProductDetails(req.body.id)
         res.json({ orderDetails : orderDetails, products : productDetails })
     }

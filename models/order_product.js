@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class order_product extends Model {
     /**
@@ -21,20 +19,23 @@ module.exports = (sequelize, DataTypes) => {
         quantity: p.quantity
       }));
 
-      await order_product.bulkCreate(orderProductsData)
+      const result = await order_product.bulkCreate(orderProductsData)
+      
+      return result
     }
 
     static async updateProduct(products, order_id)
-    {
+    { 
       await order_product.destroy({where : {order_id : order_id}})
-      
       const orderProductsData = products.map(p => ({
         order_id: order_id,
         product_id: p.product_id,
         quantity: p.quantity
       }));
 
-      await order_product.bulkCreate(orderProductsData)
+      const result = await order_product.bulkCreate(orderProductsData)
+
+      return result
     }
 
     static async getProductDetails(order_id)

@@ -27,10 +27,7 @@ module.exports = (sequelize, DataTypes) => {
 
       orderdetails.amount = amount
       
-      if(!orderdetails.order_name)
-      {
-        orderdetails.order_name = "order_"+orderdetails.order_date  
-      }
+      orderdetails.order_name = "order_"+orderdetails.order_date  
       
       const order = await orders.create(orderdetails)
       
@@ -43,18 +40,15 @@ module.exports = (sequelize, DataTypes) => {
       return orderslist
     }
 
-    static async getOrderDetails(order, user_id)
+    static async getOrderDetails(order_id, user_id)
     {
-      const orderslist = await orders.findOne({ attributes : {exclude : ["createdAt" , "updatedAt", "id", "user_id"]}}, {where : { id : order.id, user_id : user_id }})
+      const orderslist = await orders.findOne({where : { id : order_id, user_id : user_id }})
       if(orderslist) return orderslist
       else throw new Error("No records found")
     }
 
     static async updateOrder(order, user_id, amount)
     {
-      if (Object.keys(order).length === 0) {
-        throw new Error("No valid fields to update")
-      }
       order.amount = amount
       
       const [updateCount] = await orders.update(order, {where : { id : order.id, user_id : user_id }})
@@ -65,7 +59,6 @@ module.exports = (sequelize, DataTypes) => {
       }
       else
       {
-        console.log(updateCount)
         throw new Error("No records Updated!")
       }
     }
