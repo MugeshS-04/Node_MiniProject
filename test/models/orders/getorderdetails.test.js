@@ -42,7 +42,7 @@ describe("getOrderDetails function", () => {
     it("should No records found", async () => {
         
         try{
-            const res = await db.orders.getOrderDetails(9999, user.id)
+            await db.orders.getOrderDetails(9999, user.id)
         }
         catch(error)
         {

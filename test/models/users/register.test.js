@@ -4,8 +4,23 @@ import { expect } from 'chai'
 
 describe("register function", () => {
 
+    before(async () => {
+        await db.users.create({        
+            first_name: "ABCD",
+            last_name: "EFG",
+            age: 21,
+            email: "abcdqqq.s@rently.com",
+            password: "ABCD123!",
+            contact_number: "123456789"
+        })
+
+        await db.users.destroy({where : {email : "abcdqqq.s@rently.com"}})
+    })
+
     after(async () => {
         await db.users.destroy({where : {email : "abcd.s@rently.com"}, force : true})
+        await db.users.destroy({where : {email : "abcdqqq.s@rently.com"}, force : true})
+
     })
 
     afterEach(() => sinon.restore())
@@ -38,13 +53,29 @@ describe("register function", () => {
         }
         
         try{
-            const res = await db.users.register(data)
+            await db.users.register(data)
         }
         catch(error)
         {
             expect(error.message).to.equal("User already Exists!");
         }
 
+    })
+
+    it("should return registration successfull -> softdeleted user", async () => {
+        
+        const data = {         
+            first_name: "ABCD",
+            last_name: "EFG",
+            age: 21,
+            email: "abcdqqq.s@rently.com",
+            password: "ABCD123!",
+            contact_number: "123456789"
+        }
+        
+        const res = await db.users.register(data)
+
+        expect(res.email).to.equal(data.email)
     })
 
 })

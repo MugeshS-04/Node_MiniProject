@@ -3,7 +3,6 @@ import { expect } from 'chai'
 
 describe("getallOrders function", () => {
     let user = {}
-    let order = {}
 
     beforeEach(async() => {
         user = await db.users.create({         
@@ -15,7 +14,7 @@ describe("getallOrders function", () => {
             contact_number: "123456789"
         })
 
-        order = await db.orders.create({  
+        await db.orders.create({  
             user_id: user.id,
             order_name: "2313131313",
             order_date: new Date(),

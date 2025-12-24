@@ -18,18 +18,25 @@ module.exports = (sequelize, DataTypes) => {
 
     static async register(data)
     {
-        const existinguser = await users.findOne({where : { email : data.email }})
-        
-        if(existinguser)
+      const existinguser = await users.findOne({where : { email : data.email }, paranoid: false})
+      
+      if(existinguser)
+      {
+        if(existinguser.deletedAt)
         {
-          throw new Error("User already Exists!")
+          //throw new Error(`This Account has been deleted on ${existinguser.deletedAt.toLocaleString()} by ${existinguser.first_name}.`)
+          await users.destroy({where: {email : data.email}, force: true})
         }
         else
         {
-          data.password = await bcrypt.hash(data.password, 10) 
-          const user = await users.create(data)
-          return user
+          throw new Error("User already Exists!")
         }
+      }
+      
+      data.password = await bcrypt.hash(data.password, 10) 
+      const user = await users.create(data)
+      return user
+        
     }
 
     static async login(data)
@@ -96,7 +103,7 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'users',
     paranoid: true,
     defaultScope: {
-      attributes: {exclude: ["createdAt", "updatedAt", "password", "deletedAt"]}
+      attributes: {exclude: ["createdAt", "updatedAt"]}
     }
   });
 

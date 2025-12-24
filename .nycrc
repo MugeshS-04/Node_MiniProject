@@ -7,10 +7,11 @@
     "models/**/*.js"
   ],
   "exclude": [
-    "controllers/**",
+    "controllers/",
     "server.js",
     "app.js",
     "models/db.js",
+    "helpers/token.js",
     "routes/order_routes.js",
     "routes/user_routes.js",
     "node_modules/**"

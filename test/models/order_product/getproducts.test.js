@@ -4,7 +4,6 @@ import { expect } from 'chai'
 describe("getproduct function", () => {
 
   let user, order
-  let product = {}
 
   beforeEach(async () => {
     user = await db.users.create({
@@ -30,7 +29,7 @@ describe("getproduct function", () => {
       { order_id : order.id, product_id: 2, quantity: 4 }
     ]
 
-    product = await db.order_product.bulkCreate(products)
+    await db.order_product.bulkCreate(products)
   })
 
   afterEach(async () => {

@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { createOrder, getOrderDetails, updateOrder, getallOrders, createProduct } from "../controllers/order_controller.js"
+import { createOrder, getOrderDetails, updateOrder, getallOrders } from "../controllers/order_controller.js"
 import { access_verify } from "../helpers/token.js"
 import { celebrate, Joi } from 'celebrate'
 

@@ -45,7 +45,7 @@ describe("login function", () => {
         sinon.stub(bcrypt, "compare").resolves(false)
         
         try{
-            const res = await db.users.login(data)
+           await db.users.login(data)
         }
         catch(error)
         {

@@ -32,7 +32,7 @@ describe("delete function", () => {
         const data = "abcdefg.s@rently.com"
 
         try{
-            const res = await db.users.deleteUser(data)
+            await db.users.deleteUser(data)
         }
         catch(error)
         {

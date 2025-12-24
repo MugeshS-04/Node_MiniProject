@@ -2,7 +2,7 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up (queryInterface, _Sequelize) {
     await queryInterface.bulkInsert('products', [
      {
       product_name: "Horlicks",
@@ -25,7 +25,7 @@ module.exports = {
     ])
   },
 
-  async down (queryInterface, Sequelize) {
+  async down (_queryInterface, _Sequelize) {
     /**
      * Add commands to revert seed here.
      *

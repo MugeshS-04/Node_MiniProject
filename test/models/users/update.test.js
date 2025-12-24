@@ -41,7 +41,7 @@ describe("update function", () => {
         const data = {}
 
         try{
-            const res = await db.users.updateUser(data, email)
+            await db.users.updateUser(data, email)
         }
         catch(error)
         {
@@ -62,7 +62,7 @@ describe("update function", () => {
         }
 
         try{
-            const res = await db.users.updateUser(data, email)
+            await db.users.updateUser(data, email)
         }
         catch(error)
         {
